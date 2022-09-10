@@ -14,7 +14,7 @@ import java.util.concurrent.Callable
 class FetchUcpAPI(ucp:String, lang:String) : Callable<Product>{
     private val ucp = ucp
     private val lang = lang
-    private val baseUrl : String = "10.0.2.2:5000"
+    private val baseUrl : String = "10.0.2.2:5050"
     private val apiKey: String = "9146d632-30b9-11ed-a261-0242ac120002"
 
     override fun call(): Product {

@@ -12,7 +12,7 @@ import kotlin.collections.ArrayList
 class FetchCustomerAPI( search:String ,customerId : String) : Callable<ArrayList<String>>  {
     private val search = search
     private val customerId: String = customerId
-    private val baseUrl : String = "10.0.2.2:5000"
+    private val baseUrl : String = "10.0.2.2:5050"
 
     override fun call() : ArrayList<String>  {
         val suggestProducts = ArrayList<String>()

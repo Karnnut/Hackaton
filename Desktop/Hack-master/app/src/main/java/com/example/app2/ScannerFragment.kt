@@ -11,7 +11,11 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ScanMode
+import cphack.testkotlin.controller.FetchUcpAPI
+import cphack.testkotlin.model.Product
 import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.Future
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -21,6 +25,7 @@ class ScannerFragment : Fragment() {
 //    private var param1: String? = null
 //    private var param2: String? = null
 
+    private val es : ExecutorService = Executors.newFixedThreadPool(2)
     private lateinit var codeScanner: CodeScanner
 
 
@@ -40,6 +45,14 @@ class ScannerFragment : Fragment() {
                 val ubc: String = it.text
                 println("eeeeeehthyrhrrrtrhtrrgtrgegteyhheheyheyhtg  "+ubc)
 
+                try {
+                    val fetUcpTask :FetchUcpAPI = FetchUcpAPI(ubc,"en")
+                    val productFuture : Future<Product> = es.submit(fetUcpTask)
+                    val product : Product = productFuture.get()
+                    println(product)
+                }catch (e : Exception) {
+                    e.printStackTrace()
+                }
             }
 
         }
