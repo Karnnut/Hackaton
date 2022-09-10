@@ -29,14 +29,16 @@ class CacheAPI(TimeToLive: Long) {
         }
     }
 
-    public fun put(key:String ,value:Product) {
-        CACHE_MAP.put(key,value)
+    public fun put(key:String ,value:Product , lang:String) {
+        val newKey = lang + key
+        CACHE_MAP.put(newKey,value)
     }
 
 
-    public fun get(key:String) : Product? {
+    public fun get(key:String, lang:String) : Product? {
+        val newKey = lang + key
         try{
-            return CACHE_MAP.getValue(key)
+            return CACHE_MAP.getValue(newKey)
         }catch (e:Exception){
             return null
         }

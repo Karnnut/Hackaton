@@ -1,40 +1,34 @@
 package cphack.testkotlin.controller
 
-import cphack.testkotlin.model.Product
 import cphack.testkotlin.model.Discount
 import cphack.testkotlin.model.Price
 import cphack.testkotlin.model.PriceRange
+import cphack.testkotlin.model.Product
 import org.json.JSONArray
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Callable
-import org.json.JSONObject
 
+// Fetch product from ucp id
+class FetchUcpAPI(ucp:String, lang:String) : Callable<Product>{
+    private val ucp = ucp
+    private val lang = lang
+    private val baseUrl : String = "10.0.2.2:5000"
+    private val apiKey: String = "9146d632-30b9-11ed-a261-0242ac120002"
 
-
-class FetchProductAPI(productID: String, lang:String) : Callable<Product>  {
-    // TO DO Change api endpoint to backend service
-    private var productID:String = productID
-    private var auth:String = "Basic ZWY4ZTZjMjgzODdlNGVjYTlkM2UxMTU1MDQxMjgyYzE6MEU1NTg0QzUxZTdBNDBEODkzMDUxZGExY2NEQTg2ZTY="
-    private var lang:String = lang
-
-
-    override fun call() : Product {
-        println("Calling fetch api Product ${productID} Language ${lang.uppercase()}")
-
-        val url = String.format(
-            "https://ppe-api.lotuss.com/proc/product/api/v1/products/details?websiteCode=thailand_hy&sku=%s&storeId=5016",
-            this.productID
-        )
-
+    override fun call(): Product {
+        val url : String = String.format("http://%s/product/%s/%s",baseUrl , lang , ucp )
+        println(url)
         val connection = URL(url).openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
-        connection.setRequestProperty("accept-language", this.lang)
-        connection.setRequestProperty("authorization", this.auth)
+        connection.setRequestProperty("x-api-key", this.apiKey)
+        connection.connectTimeout = 10000
 
         if (connection.responseCode == 200) {
             val responseBody = connection.inputStream.use { it.readBytes() }.toString(Charsets.UTF_8)
             val jsonObject: JSONObject = JSONObject(responseBody).getJSONObject("data")
+            println(jsonObject)
             return parsingJsonObject(jsonObject)
         } else {
             println("Error fetching api http status ${connection.responseCode}")
@@ -85,7 +79,7 @@ class FetchProductAPI(productID: String, lang:String) : Callable<Product>  {
 
     }
 
-    private fun getPriceRange(jsonObject: JSONObject) : PriceRange?{
+    private fun getPriceRange(jsonObject: JSONObject) : PriceRange? {
         try {
             val itemPriceRange: JSONObject =
                 (jsonObject.get("priceRange") as JSONObject).get("minimumPrice") as JSONObject
@@ -109,7 +103,7 @@ class FetchProductAPI(productID: String, lang:String) : Callable<Product>  {
             )
 
             return PriceRange(regularPrice, finalPrice, discount)
-        }catch (e:Exception){
+        } catch (e: Exception) {
             return null
         }
     }

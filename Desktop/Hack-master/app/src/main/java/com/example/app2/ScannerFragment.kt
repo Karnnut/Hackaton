@@ -11,6 +11,7 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ScanMode
+import java.util.concurrent.ExecutorService
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"

@@ -20,6 +20,7 @@ class FetchCustomerAPI( search:String ,customerId : String) : Callable<ArrayList
             val url = String.format("http://%s/%s/%s",baseUrl,this.search,this.customerId)
             println("Send request for ${search} to ${baseUrl} with customer id = ${customerId}")
             val connection = URL(url).openConnection() as HttpURLConnection
+            connection.setRequestProperty("x-api-key","9146d632-30b9-11ed-a261-0242ac120002")
             connection.connectTimeout = 5000
             if (connection.responseCode == 200) {
                 val responseBody = connection.inputStream.use { it.readBytes() }.toString(Charsets.UTF_8)
