@@ -31,11 +31,16 @@ class ScannerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val scannerView = view.findViewById<CodeScannerView>(R.id.scanner_view)
         val activity = requireActivity()
+        val ubc: String
         codeScanner = CodeScanner(activity, scannerView)
         codeScanner.decodeCallback = DecodeCallback {
             activity.runOnUiThread {
                 Toast.makeText(activity, it.text, Toast.LENGTH_LONG).show()
+                val ubc: String = it.text
+                println("eeeeeehthyrhrrrtrhtrrgtrgegteyhheheyheyhtg  "+ubc)
+
             }
+
         }
         scannerView.setOnClickListener {
             codeScanner.startPreview()
