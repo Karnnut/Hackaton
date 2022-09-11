@@ -7,4 +7,5 @@
     <string name="scanner">Scanner</string>
     <string name="cart">Cart</string>
     <string name="profile">Profile</string>
+    <string name="CartText">TextView</string>
 </resources>

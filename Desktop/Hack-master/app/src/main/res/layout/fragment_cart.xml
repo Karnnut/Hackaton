@@ -6,9 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".CartFragment">
 
-    <ImageView
-        android:id="@+id/imageView8"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/cartlist" />
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="match_parent"
+            android:layout_height="209dp"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="300dp"
+            android:text="TextView" />
+    </androidx.cardview.widget.CardView>
 </FrameLayout>

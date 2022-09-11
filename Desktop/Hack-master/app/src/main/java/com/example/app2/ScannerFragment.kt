@@ -1,12 +1,14 @@
 package com.example.app2
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,6 +19,7 @@ import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ScanMode
 import cphack.testkotlin.controller.CacheAPI
 import cphack.testkotlin.controller.FetchUcpAPI
+import cphack.testkotlin.controller.GenerateBill
 import cphack.testkotlin.model.Product
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -39,7 +42,8 @@ class ScannerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var m = MainActivity()
+
+        var m = requireActivity() as MainActivity
         val scannerView = view.findViewById<CodeScannerView>(R.id.scanner_view)
         val activity = requireActivity()
         val ubc: String
@@ -68,13 +72,24 @@ class ScannerFragment : Fragment() {
                             cacheAPI.put(ubc, product, "en")
                         }
                         println("Hello")
-                        var c = m.customerCart
-                        println(c[0])
+
+//                        for( i in 0 until c.size){
+//                            c.get(i).name
+//                        }
+
                     }catch (e : Exception) {
                         e.printStackTrace()
                     }
+
                 }
+                var c = m.customerCart
+                var G = GenerateBill(c)
+//                println(G.billSummary)
+//                println(G.billSumFullPrice)
+//                println(G.billSumWithDiscount)
+
             }
+
 
         }
         scannerView.setOnClickListener {
