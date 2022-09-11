@@ -6,8 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".CartFragment">
 
-    <androidx.cardview.widget.CardView
+    <ImageView
+        android:id="@+id/imageView8"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardBackgroundColor="#E91E63" />
+        android:src="@drawable/cartlist" />
 </FrameLayout>
