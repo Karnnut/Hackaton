@@ -11,6 +11,7 @@ import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
 import com.budiyev.android.codescanner.DecodeCallback
 import com.budiyev.android.codescanner.ScanMode
+import cphack.testkotlin.controller.CacheAPI
 import cphack.testkotlin.controller.FetchUcpAPI
 import cphack.testkotlin.model.Product
 import java.util.concurrent.ExecutorService
@@ -24,7 +25,7 @@ class ScannerFragment : Fragment() {
     // TODO: Rename and change types of parameters
 //    private var param1: String? = null
 //    private var param2: String? = null
-
+    private val cacheAPI : CacheAPI = CacheAPI(60*30)
     private val es : ExecutorService = Executors.newFixedThreadPool(2)
     private lateinit var codeScanner: CodeScanner
 
@@ -35,6 +36,7 @@ class ScannerFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var m = MainActivity()
         val scannerView = view.findViewById<CodeScannerView>(R.id.scanner_view)
         val activity = requireActivity()
         val ubc: String
@@ -45,13 +47,25 @@ class ScannerFragment : Fragment() {
                 val ubc: String = it.text
                 println("eeeeeehthyrhrrrtrhtrrgtrgegteyhheheyheyhtg  "+ubc)
 
-                try {
-                    val fetUcpTask :FetchUcpAPI = FetchUcpAPI(ubc,"en")
-                    val productFuture : Future<Product> = es.submit(fetUcpTask)
-                    val product : Product = productFuture.get()
-                    println(product)
-                }catch (e : Exception) {
-                    e.printStackTrace()
+                if(cacheAPI.get(ubc,"en") != null){
+                    val product = cacheAPI.get(ubc,"en")
+                    if (product != null) {
+                        m.customerCart.add(product)
+                    }
+                }else{
+                    try {
+                        val fetUcpTask :FetchUcpAPI = FetchUcpAPI(ubc,"en")
+                        val productFuture : Future<Product> = es.submit(fetUcpTask)
+                        val product : Product = productFuture.get()
+                        if(product.name == "-1" || product.sku == "-1"){
+                            println("Data doesn't exist")
+                        }else {
+                            m.customerCart.add(product)
+                            cacheAPI.put(ubc, product, "en")
+                        }
+                    }catch (e : Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
 
