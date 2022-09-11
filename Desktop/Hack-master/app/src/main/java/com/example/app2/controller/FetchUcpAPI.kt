@@ -14,11 +14,11 @@ import java.util.concurrent.Callable
 class FetchUcpAPI(ucp:String, lang:String) : Callable<Product>{
     private val ucp = ucp
     private val lang = lang
-    private val baseUrl : String = "10.0.2.2:5050"
+    private val baseUrl : String = "4b4a-13-212-56-167.ap.ngrok.io"
     private val apiKey: String = "9146d632-30b9-11ed-a261-0242ac120002"
 
     override fun call(): Product {
-        val url : String = String.format("http://%s/product/%s/%s",baseUrl , lang , ucp )
+        val url : String = String.format("https://%s/product/%s/%s",baseUrl , lang , ucp )
         println(url)
         val connection = URL(url).openConnection() as HttpURLConnection
         connection.requestMethod = "GET"

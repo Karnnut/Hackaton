@@ -1,11 +1,15 @@
 package com.example.app2
 
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.budiyev.android.codescanner.AutoFocusMode
 import com.budiyev.android.codescanner.CodeScanner
 import com.budiyev.android.codescanner.CodeScannerView
@@ -18,13 +22,12 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.Future
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
+private const val CAMERA_CODE = 101
 class ScannerFragment : Fragment() {
     // TODO: Rename and change types of parameters
 //    private var param1: String? = null
 //    private var param2: String? = null
+
     private val cacheAPI : CacheAPI = CacheAPI(60*30)
     private val es : ExecutorService = Executors.newFixedThreadPool(2)
     private lateinit var codeScanner: CodeScanner
@@ -49,6 +52,7 @@ class ScannerFragment : Fragment() {
 
                 if(cacheAPI.get(ubc,"en") != null){
                     val product = cacheAPI.get(ubc,"en")
+                    println(product)
                     if (product != null) {
                         m.customerCart.add(product)
                     }
@@ -63,6 +67,9 @@ class ScannerFragment : Fragment() {
                             m.customerCart.add(product)
                             cacheAPI.put(ubc, product, "en")
                         }
+                        println("Hello")
+                        var c = m.customerCart
+                        println(c[0])
                     }catch (e : Exception) {
                         e.printStackTrace()
                     }
@@ -81,6 +88,7 @@ class ScannerFragment : Fragment() {
     }
 
     override fun onPause() {
+
         codeScanner.releaseResources()
         super.onPause()
     }
